@@ -18,7 +18,31 @@
 <!-- Navigate -->
 <nav class='dashboard_nav nav'>
     <p>Date Harvest Reports</p>         
-    <p>Logout</p>
+ <ul>
+            <li>
+                <a href="./dashboard">Dashboard</a>
+            </li>
+
+            <?php if ($role === 'staff'): ?>
+
+                <li>
+                    <a href="./reports/index.php">My Reports</a>
+                </li>
+
+            <?php elseif ($role === 'admin'): ?>
+
+                <li>
+                    <a href="./reports/index.php">All Reports</a>
+                </li>
+
+            <?php endif; ?>
+
+            <li>
+                <a href="./auth/logout.php">Logout</a>
+            </li>
+        </ul>
+
+
 </nav>
 
     <!-- Main content -->

@@ -8,7 +8,36 @@ class User
         $this->db = $db;
     }
 
-    public function findUserByEmail($email)
+    public function create($user)
+    {
+        $sql = "INSERT INTO users (
+                user_id,
+                role,
+                name,
+                email,
+                password
+            )
+            VALUES (
+                :user_id,
+                :role,
+                :name,
+                :email,
+                :password
+            )
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([
+            ':user_id' => $user['user_id'],
+            ':role' => $user['role'],
+            ':name' => $user['name'],
+            ':email' => $user['email'],
+            ':password' => $user['password']
+        ]);
+    }
+
+public function findUserByEmail($email)
     {
         $sql = "SELECT a.email, u.user_id, u.role, u.name, a.password_hash
                 FROM auth a
@@ -25,4 +54,19 @@ class User
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    //Create View For This!
+    public function getAllUser()
+    {
+    $sql = "
+        SELECT user_id, name, email, role
+        FROM users
+        ORDER BY name ASC
+    ";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }

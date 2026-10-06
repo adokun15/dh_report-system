@@ -85,7 +85,7 @@ input {
 
 .centered {
   margin: auto;
-  width: fit-content;
+  min-width: fit-content;
 }
 
 .error_text {
@@ -146,7 +146,131 @@ input {
 
 .dashboard_body {
   margin-top: 3.3rem;
+  min-width: 80%;
 }
+
+/*Ai chat!*/
+/* GENERATE: Styling for the all reports page */
+/*1: Reports */
+.reports_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.reports_header p {
+  color: var(--muted);
+}
+
+.reports_header a {
+  background-color: var(--primary);
+  color: white;
+  padding: 0.6rem 1rem;
+  text-decoration: none;
+}
+
+.reports_table {
+  width: 80%;
+  overflow-x: auto;
+}
+
+.reports_table table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--background_light);
+}
+
+.reports_table th,
+.reports_table td {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.reports_table th {
+  color: var(--text-h);
+}
+
+.reports_table a {
+  color: var(--text-h);
+  text-decoration: underline;
+}
+
+/*2: Create Report*/
+.report_form {
+  width: 70%;
+  padding: 1.5rem;
+  background-color: var(--background_light);
+}
+
+.report_form > div {
+  margin-bottom: 1.3rem;
+}
+
+.report_form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.report_form textarea {
+  width: 100%;
+  min-height: 250px;
+  resize: vertical;
+  background-color: var(--input);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  outline: none;
+  font: inherit;
+}
+
+.report_form button {
+  color: white;
+  cursor: pointer;
+}
+
+.report_form a {
+  margin-left: 1rem;
+}
+
+/*Single Report*/
+.report_view {
+  margin-top: 2rem;
+  max-width: 800px;
+  padding: 2rem;
+  background-color: var(--background_light);
+}
+
+.report_view header {
+  margin-bottom: 2rem;
+}
+
+.report_view header p {
+  color: var(--muted);
+}
+
+.report_description {
+  white-space: normal;
+  margin-bottom: 2rem;
+}
+
+.report_view footer {
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  color: var(--muted);
+}
+
+/*Create */
+.report_form select {
+  width: 100%;
+  background-color: var(--input);
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  outline: none;
+  font: inherit;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --text: hsl(218, 11%, 65%);
