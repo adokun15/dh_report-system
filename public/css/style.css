@@ -1,6 +1,162 @@
-*,
-body {
+:root {
+  /* colors */
+  --background: hsl(0, 0%, 90%);
+  --background_light: hsl(0, 0%, 70%);
+
+  --foreground: hsl(0, 0%, 10%);
+
+  --text: hsl(266, 8%, 36%);
+  --text-h: hsl(267, 8%, 5%);
+
+  --border: hsl(260, 6%, 90%);
+
+  --primary-bg90: hsl(39, 100%, 92%);
+  --primary-bg70: hsl(40, 96%, 85%);
+  --primary: hsl(40, 93%, 15%);
+
+  --secondary-bg90: hsl(6, 100%, 99%);
+  --secondary-bg70: hsl(6, 100%, 85%);
+  --secondary: hsl(6, 100%, 70%);
+
+  --shadow-bg:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --danger-red: hsl(6, 100%, 30%);
+  --input: hsl(180, 1%, 86%);
+  --muted: hsl(140, 0%, 50%);
+
+  /* font family */
+  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  /* Default Spacing, Fonts and  COlor */
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--background);
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+* {
   border: 0;
+  margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* default*/
+body {
+  background-color: var(--background);
+}
+
+h2 {
+  font-size: 1.9rem;
+}
+
+button {
+  padding: 0.5rem 1.7rem;
+  border-radius: 1rem;
+  font-size: medium;
+  background-color: var(--primary);
+}
+
+input {
+  width: 100%;
+  background-color: var(--input);
+  display: block;
+  font-weight: 500;
+  color: var(--muted);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  outline: none;
+  font-size: 1.2rem;
+  width: 100%;
+  max-width: 80vw;
+}
+.nav {
+  background-color: var(--background_light);
+  padding: 1rem 2rem;
+  font-weight: 700;
+  font-size: medium;
+}
+
+.centered {
+  margin: auto;
+  width: fit-content;
+}
+
+.error_text {
+  color: rgb(209, 15, 15);
+}
+/*Classes*/
+.home {
+  min-height: 100vh;
+}
+
+.home .home_body {
+  margin: 4rem auto;
+  width: fit-content;
+}
+
+.home .home_body article {
+  margin-bottom: 1rem;
+  height: fit-content;
+}
+
+.home .home_body article p {
+  margin: 0.7rem 0;
+  height: fit-content;
+}
+
+.login_form {
+  margin-top: 4vh;
+  width: 60%;
+  padding: 0.9rem 2.3rem;
+  background-color: var(--background_light);
+}
+
+.login_form div > * {
+  display: block;
+  margin: 0.5rem 0;
+}
+
+.login_form h2 {
+  margin-bottom: 2rem;
+}
+.login_form button {
+  margin-top: 2rem;
+  border-radius: 0;
+  padding: 0.7rem 3rem;
+}
+
+.dashboard_nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dashboard_nav ul {
+  display: flex;
+  list-style: none;
+  min-width: 30%;
+  justify-content: space-between;
+}
+
+.dashboard_body {
+  margin-top: 3.3rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: hsl(218, 11%, 65%);
+    --text-h: #f3f4f6;
+    --background: hsl(80, 12%, 5%);
+    --background_light: hsl(80, 12%, 10%);
+    --input: hsl(80, 12%, 20%);
+    --foreground: #fff;
+    --border: #2e303a;
+    --shadow-bg:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
 }

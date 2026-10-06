@@ -1,6 +1,5 @@
 <?php
-
-function getUsers()
+function getDashboardSummary()
 {
     return [
         [

@@ -6,7 +6,24 @@ $base = '/dh_reports';
 
 $route = str_replace($base, '', $uri);
 
-if ($route === '/users') {
-    require_once   __DIR__ . "/../controllers/user.controller.php";
-    index();
+switch($route){
+    case '/index.php':
+        require_once  __DIR__ . "/../views/home.php";
+        break;
+        
+        case '/login':
+            require_once  __DIR__ . "/../views/login.php";
+    break;
+    
+    case '/users':
+        require_once   __DIR__ . "/../controllers/user.controller.php";
+        index();
+    break;
+    
+    case '/dashboard':
+        require_once   __DIR__ . "/../controllers/dashboard.controller.php";
+        dashboard();
+    break;
+    default:
+        echo 'Page Not Found!';
 }
