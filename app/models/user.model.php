@@ -80,11 +80,19 @@ public function findUserByUserId($user_id)
 
 
     //Create View For This!
-    public function getAllUser()
+    public function getAllUsers()
     {
     $sql = "
-        SELECT user_id, name, email, role
+        SELECT 
+        users.user_id, users.name, auth.email, users.role,
+        COUNT(reports.report_id) as total_reports
         FROM users
+        left join auth 
+        on users.user_id = auth.user_id
+        left join reports
+        on reports.author_id = users.user_id 
+        where role = 'staff'
+        Group by users.user_id
         ORDER BY name ASC
     ";
 

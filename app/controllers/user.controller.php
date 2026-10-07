@@ -1,17 +1,20 @@
+<?php 
+require_once __DIR__ . '/../config/middleware.php';
+require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../models/user.model.php';
+requireAdmin();
+?>
 <?php
 class UserController
 {
     private $userModel;
-
     public function __construct($db){
         $this->userModel = new User($db);
     }
-
     //All users
     public function index()
     {
-      
-     return $this->userModel->getAll();
+     return $this->userModel->getAllUsers();
     }
 
   public function get($user_id) 

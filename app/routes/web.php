@@ -18,9 +18,9 @@ switch($route){
     break;
 
     //List Items / Indexes
-    case '/users':
-        require_once   __DIR__ . "/../controllers/user.controller.php";
-        index();
+    case '/dashboard/users':
+        require_once   __DIR__ . "/../views/users/index.php";
+    
     break;
     
     case '/dashboard/reports':

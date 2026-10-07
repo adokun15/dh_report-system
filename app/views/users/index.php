@@ -1,51 +1,22 @@
 <?php
-/*
 session_start();
-
-require_once __DIR__ . '/../../middleware/auth.php';
-requireAuth();
-if ($_SESSION['role'] !== 'admin') {
-    http_response_code(403);
-    exit('Forbidden');
-}
-
-
-
-<?php
-
-session_start();
-
-require_once __DIR__ . '/../../middleware/auth.php';
-requireAdmin();
-
-require_once __DIR__ . '/../../config/db.php';
-require_once __DIR__ . '/../../models/user.model.php';
 require_once __DIR__ . '/../../controllers/user.controller.php';
-
 $userController = new UserController($pdo);
-
 $users = $userController->index();
-
 ?>
 
 
-
-*/
-?>
 
 <?php require __DIR__ . '/../../components/head.php'; ?>
 
 <section class="section">
 
     <nav class="nav dashboard_nav">
-
         <p>Date Harvest Reports</p>
-
         <ul>
             <li>
                 <?= htmlspecialchars($_SESSION['name']) ?>
             </li>
-
             <li>
                 <a href="../dashboard.php">Dashboard</a>
             </li>
@@ -54,11 +25,10 @@ $users = $userController->index();
     </nav>
 
     <main class="dashboard_body">
-
-        <h2>Users</h2>
-
-        <a href="./create.php">Create User</a>
-
+        <div>
+            <h2>Users</h2>    
+            <a href="create">Create User</a>
+        </div>
         <!-- GENERATE: Users table -->
 
         <table class="users_table">
@@ -68,7 +38,8 @@ $users = $userController->index();
                     <th>Name</th>
                     <th>Email</th>
                     <th>Role</th>
-                    <th>Action</th>
+                    <th>Reports</th>
+                    
                 </tr>
             </thead>
 
@@ -89,13 +60,17 @@ $users = $userController->index();
                         <td>
                             <?= htmlspecialchars($user['role']) ?>
                         </td>
-
+                        
                         <td>
-                            <a href="./edit.php?id=<?= urlencode($user['user_id']) ?>">
+                            <?= htmlspecialchars($user['total_reports']) ?>
+                        </td>
+
+                   <!--     <td>
+                            <a href="./edit.php?id=<?/*= urlencode($user['user_id']) */ ?>">
                                 Edit
                             </a>
                         </td>
-
+                -->
                     </tr>
 
                 <?php endforeach; ?>
