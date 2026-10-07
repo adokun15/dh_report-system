@@ -15,13 +15,15 @@ class AuthController
         if (!$user || !password_verify($password, $user['password_hash'])) {
             return [
                 'success' => false,
-                'message' => 'Invalid username or password.'
+                'message' => 'Invalid email or password.'
             ];
         }
 
         session_regenerate_id(true);
 
         $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['role'] = $user['role'];
+        
         return ['success' => true];
     }
 }

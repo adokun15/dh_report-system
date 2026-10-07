@@ -1,5 +1,3 @@
-
-
 <?php
 class UserController
 {
@@ -12,14 +10,31 @@ class UserController
     //All users
     public function index()
     {
-    return $this->userModel->getAll();
+      
+     return $this->userModel->getAll();
     }
 
+  public function get($user_id) 
+     {
+        $user = $this->userModel->findUserByUserId($user_id);
+
+        if (!$user){
+            return [
+                'success' => false,
+                'message' => 'User not Found!'
+            ];
+        }
+            return [
+                'success' => true,
+                'data' => $user
+            ];
+    }
     
+   
 
     //Create
     public function create($data)
-{
+    {
     if (
         empty($data['name']) ||
         empty($data['email']) ||

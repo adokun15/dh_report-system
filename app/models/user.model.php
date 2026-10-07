@@ -37,23 +37,47 @@ class User
         ]);
     }
 
-public function findUserByEmail($email)
+    public function findUserByEmail($email)
     {
-        $sql = "SELECT a.email, u.user_id, u.role, u.name, a.password_hash
+        $sql = "SELECT a.email, u.user_id, u.role, a.password_hash
                 FROM auth a
                 join users u
                 on a.user_id = u.user_id 
                 WHERE email = :email
                 LIMIT 1";
 
-        $stmt = $this->db->prepare($sql);
+$stmt = $this->db->prepare($sql);
 
-        $stmt->execute([
-            ':email' => $email
+$stmt->execute([
+    ':email' => $email
         ]);
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    
+public function findUserByUserId($user_id)
+    {
+        $sql = "SELECT 
+         a.email,
+         u.user_id, 
+         u.role,
+         u.name,
+         u.photo
+                FROM auth a
+                join users u
+                on a.user_id = u.user_id 
+                WHERE u.user_id = :userid
+                LIMIT 1";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':userid' => $user_id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 
     //Create View For This!
     public function getAllUser()

@@ -9,7 +9,7 @@ class Report
         $this->db = $db;
     }
 
-    
+
     public function getAllReports()
 {
     $sql = "
@@ -54,6 +54,77 @@ public function getReportsByUser($userId)
     ]);
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+public function getReportsByDivision()
+   {
+    $sql = "
+    SELECT
+    division_place,
+    Coalesce(SUM(reg_record), 0) AS registrations,
+    Coalesce(SUM(success_record), 0) AS successful,
+    Coalesce(SUM(error_record), 0) AS errors,
+    Coalesce(SUM(duplicates_record), 0) AS duplicates
+FROM reports
+GROUP BY division_place
+ORDER BY registrations DESC;
+";
+    $stmt = $this->db->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+public function getReportsStatForAdmin(){
+ 
+    $sql = "      
+    SELECT
+    COALESCE(SUM(reg_record), 0) AS registrations,
+    COALESCE(SUM(success_record), 0) AS successful,
+    COALESCE(SUM(error_record), 0) AS errors,
+    COALESCE(SUM(duplicates_record), 0) AS duplicates
+    FROM reports
+";
+
+    $stmt = $this->db->query($sql);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+public function getRecentReports($user_id)
+   {
+    $sql = "
+  SELECT
+   enrolment_officer_name as receiver_name,
+   enrolment_officer_phone as receiver_phone,
+   device,
+   report_id,
+   updated_at as recently_changed
+FROM reports
+where author_id = :user_id  
+ORDER BY updated_at DESC
+limit 5 
+";
+$stmt = $this->db->prepare($sql);
+$stmt->execute([':user_id' => $user_id]);
+      
+return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+public function getReportsStatForStaff($user_id)
+   {
+    $sql = "
+  SELECT
+    COALESCE(SUM(reg_record), 0) AS registrations,
+    COALESCE(SUM(success_record), 0) AS successful,
+    COALESCE(SUM(error_record), 0) AS errors,
+    COALESCE(SUM(duplicates_record), 0) AS duplicates
+FROM reports
+WHERE author_id = :user_id;  
+";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([
+        ':user_id' => $user_id
+    ]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
 public function getSingleReportById($reportId, $userId){

@@ -13,12 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ./dashboard');
         exit;
     }
+    
     $error = $result['message'];
 }
 ?>
 
 <?php require __DIR__ . '/../components/head.php'; ?>
 <section class='section login'>
+
 <!-- Navigate -->
 <nav class='nav'>
     <p>Date Harvest Reports</p>         
@@ -27,10 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!-- Login Body -->
 <form method="post" class='login_form centered'>
- <h2>Login to your Account</h2>    
+<h2>Login to your Account</h2>    
+
 <?php if ($error): ?>    
     <p class="error_text"><?= htmlspecialchars($error) ?></p>
 <?php endif; ?>
+
 <div>
         <label>Email</label>
         <input placeholder="Enter your email Address" name="email" type='email'/>
@@ -42,6 +46,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <button>Sign In</button>
 </div>
-
 </section>   
 <?php require __DIR__ . '/../components/bottom.php'; ?>

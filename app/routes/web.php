@@ -23,8 +23,8 @@ switch($route){
     break;
     
     case '/dashboard':
-        require_once   __DIR__ . "/../controllers/dashboard.controller.php";
-        dashboard();
+        require_once   __DIR__ . "/../views/dashboard.php";
+        //dashboard();
     break;
     default:
         echo 'Page Not Found!';
