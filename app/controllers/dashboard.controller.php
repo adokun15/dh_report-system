@@ -6,7 +6,7 @@
   //Pull user details
   require __DIR__ . '/../models/user.model.php';
   require __DIR__ . '/../models/report.model.php';
- 
+
   requireAuth();
   
   $user = new User($pdo);

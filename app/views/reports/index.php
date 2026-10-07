@@ -1,30 +1,14 @@
 <?php
-
 session_start();
-
-require_once __DIR__ . '/../../middleware/auth.php';
+require_once __DIR__ . '/../../controllers/report.controller.php';
 requireAuth();
 
-require_once __DIR__ . '/../../config/db.php';
-require_once __DIR__ . '/../../models/report.model.php';
-require_once __DIR__ . '/../../controllers/report.controller.php';
-
 $reportController = new ReportController($pdo);
-
-
-if ($_SESSION['role'] === 'admin') {
-    $reports = $reportController->all();
-} else {
-    $reports = $reportController->index();
-}
-
+$reports = $reportController->all();
+$user_reports = $reportController->userReports();
 ?>
 
 <?php require __DIR__ . '/../../components/head.php'; ?>
-
-
-
-
 
 
 <section class="dashboard">
@@ -43,18 +27,16 @@ if ($_SESSION['role'] === 'admin') {
         </ul>
     </nav>
 
-
     <main class="dashboard_body centered">
-        <header class="reports_header">
+        
+    <header class="reports_header">
             <div>
-                <p>Reports</p>
                 <h2>All Reports</h2>
             </div>
             <a href="./reports/create.php">
                 Submit Report
             </a>
-        </header>
-
+    </header>
 
         
         <section class="reports_table">
@@ -70,17 +52,15 @@ if ($_SESSION['role'] === 'admin') {
 
 
 <table class="reports_table">
-
     <thead>
         <tr>
             <th>Title</th>
-
             <?php if ($_SESSION['role'] === 'admin'): ?>
                 <th>Submitted By</th>
             <?php endif; ?>
 
             <th>Date</th>
-            <th>Status</th>
+            <th>Device</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -88,7 +68,7 @@ if ($_SESSION['role'] === 'admin') {
         <?php foreach ($reports as $report): ?>
             <tr>
                 <td>
-                    <?= htmlspecialchars($report['title']) ?>
+                    <?= htmlspecialchars($report['remarks']) ?>
                 </td>
                 <?php if ($_SESSION['role'] === 'admin'): ?>
                     <td>
@@ -96,13 +76,14 @@ if ($_SESSION['role'] === 'admin') {
                     </td>
                 <?php endif; ?>
                 <td>
-                    <?= htmlspecialchars($report['report_date']) ?>
+                    <?= htmlspecialchars($report['created_at']) ?>
                 </td>
                 <td>
-                    <?= htmlspecialchars($report['status']) ?>
+                   <p> <?= htmlspecialchars($report['device']) ?> </p>
+                    <p><?= htmlspecialchars($report['system_id']) ?></p>
                 </td>
                 <td>
-                    <a href="./view.php?id=<?= urlencode($report['report_id']) ?>">
+                    <a href="./reports/view?id=<?= urlencode($report['report_id']) ?>">
                         View
                     </a>
                 </td>
@@ -112,12 +93,6 @@ if ($_SESSION['role'] === 'admin') {
 </table>
  <?php endif; ?>
 </section>  
-
-
-
-
-
-
 
 </main>
 </section>

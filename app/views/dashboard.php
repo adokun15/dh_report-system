@@ -22,8 +22,10 @@
                 </li>
                 <?php elseif ($role === 'admin'): ?>
                     <li class="nav_link">
-                        
                         <a href="dashboard/reports">All Reports</a>
+                    </li>
+                    <li class="nav_link">
+                        <a href="dashboard/reports">All Staffs</a>
                     </li>
                     <?php endif; ?>
                     <li class="nav_link">

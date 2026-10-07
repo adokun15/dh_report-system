@@ -1,3 +1,10 @@
+<?php 
+require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../config/middleware.php';
+require_once __DIR__ . '/../models/report.model.php';
+requireAuth();
+
+?>
 <?php
 class ReportController
 {
@@ -21,7 +28,7 @@ class ReportController
 }
 
 //All User reports
-    public function index(){
+public function userReports(){
     return $this->reportModel->getReportsByUser($_SESSION['user_id']);
 }
 
@@ -32,16 +39,21 @@ public function all()
         http_response_code(403);
         exit('Forbidden');
     }
-    return $this->reportModel->getAll();
+    return $this->reportModel->getAllReports();
+ 
 }
 
-//Single Data
+//Single Data: 
 public function show($reportId)
 {
-    return $this->reportModel->getById(
-        $reportId,
-        $_SESSION['user_id']
-    );
+    if($_SESSION['role'] === 'staff'){
+        return $this->reportModel->getSingleReportByUserId(
+            $reportId,
+            $_SESSION['user_id']
+        );
+        } else {
+        return $this->reportModel->getSingleReportByAdmin($reportId);
+    }
 }
 
 //Helper Function!

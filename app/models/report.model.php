@@ -14,18 +14,18 @@ class Report
 {
     $sql = "
         SELECT
-            reports.report_id,
-            reports.title,
-            reports.description,
-            reports.report_date,
-            reports.status,
-            reports.created_at,
-            users.name AS user_name,
-            users.email AS user_email
+            reports.*,
+            user.photo as user_photo,
+            user.role as user_role,
+            user.name AS user_name,
+            auth.email AS user_email
         FROM reports
-        INNER JOIN users
-            ON reports.user_id = users.user_id
+        INNER JOIN users user
+            ON reports.author_id = user.user_id
+        INNER JOIN auth
+            ON reports.author_id = auth.user_id
         ORDER BY reports.created_at DESC
+        limit 100;
     ";
 
     $stmt = $this->db->query($sql);
@@ -37,13 +37,8 @@ public function getReportsByUser($userId)
    {
     $sql = "
         SELECT
-            report_id,
-            title,
-            report_date,
-            status,
-            created_at
-        FROM reports
-        WHERE user_id = :user_id
+         * FROM reports
+        WHERE author_id = :user_id
         ORDER BY created_at DESC
     ";
 
@@ -129,14 +124,7 @@ WHERE author_id = :user_id;
 
 public function getSingleReportById($reportId, $userId){
     $sql = "
-        SELECT
-            report_id,
-            title,
-            description,
-            report_date,
-            status,
-            created_at
-        FROM reports
+        SELECT * FROM reports
         WHERE report_id = :report_id
         AND user_id = :user_id
         LIMIT 1
@@ -147,6 +135,24 @@ public function getSingleReportById($reportId, $userId){
     $stmt->execute([
         ':report_id' => $reportId,
         ':user_id' => $userId
+    ]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+public function getSingleReportByAdmin($reportId){
+    $sql = "
+        SELECT
+        * FROM reports
+        WHERE report_id = :report_id
+        LIMIT 1
+    ";
+
+    $stmt = $this->db->prepare($sql);
+
+    $stmt->execute([
+        ':report_id' => $reportId,
+        
     ]);
 
     return $stmt->fetch(PDO::FETCH_ASSOC);

@@ -13,13 +13,18 @@ switch($route){
             require_once  __DIR__ . "/../views/login.php";
     break;
     
+    case '/dashboard/reports/view':
+        require_once   __DIR__ . "/../views/reports/report_view.php";
+    break;
+
+    //List Items / Indexes
     case '/users':
         require_once   __DIR__ . "/../controllers/user.controller.php";
         index();
     break;
     
     case '/dashboard/reports':
-        require_once   __DIR__ . "/../views/reports/report_list.php";
+        require_once   __DIR__ . "/../views/reports/index.php";
     break;
     
     case '/dashboard':
