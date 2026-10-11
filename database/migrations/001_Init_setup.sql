@@ -1,5 +1,4 @@
 -- Tables--
-
 CREATE TABLE IF NOT EXISTS users (
     user_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     role ENUM('admin', 'staff') DEFAULT 'staff',

@@ -158,33 +158,76 @@ public function getSingleReportByAdmin($reportId){
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-  public function createReport($report)
-    {
-        $sql = "
-            INSERT INTO reports (
-                report_id,
-                user_id,
-                title,
-                description,
-                report_date
-            )
-            VALUES (
-                :report_id,
-                :user_id,
-                :title,
-                :description,
-                :report_date
-            )
-        ";
+  
+public function createReport($report)
+{
+    $sql = "
+        INSERT INTO reports (
+            author_id,
+            device,
+            system_id,
+            enrolment_officer_name,
+            enrolment_officer_phone,
+            division_place,
+            reg_record,
+            sending_record,
+            error_record,
+            remarks,
+            after_success_record,
+            before_success_record,
+            after_duplicates_record,
+            before_duplicates_record,
+            adult_record,
+            child_record,
+            recap_record,
+            online_record,
+            child_to_adult_record
+        )
+        VALUES (
+            :author_id,
+            :device,
+            :system_id,
+            :enrolment_officer_name,
+            :enrolment_officer_phone,
+            :division,
+            :reg_record,
+            :sending_record,
+            :error_record,
+            :remarks,
+            :after_success_record,
+            :before_success_record,
+            :after_duplicates_record,
+            :before_duplicates_record,
+            :adult_record,
+            :child_record,
+            :recap_record,
+            :online_record,
+            :child_to_adult_record
+        )
+    ";
 
-        $stmt = $this->db->prepare($sql);
+    $stmt = $this->db->prepare($sql);
 
-        return $stmt->execute([
-            ':report_id' => $report['report_id'],
-            ':user_id' => $report['user_id'],
-            ':title' => $report['title'],
-            ':description' => $report['description'],
-            ':report_date' => $report['report_date']
-        ]);
-    }
+    return $stmt->execute([
+        ':author_id' => $report['author_id'],
+        ':device' => $report['device'],
+        ':system_id' => $report['system_id'],
+        ':enrolment_officer_name' => $report['enrolment_officer_name'],
+        ':enrolment_officer_phone' => $report['enrolment_officer_phone'],
+        ':division' => $report['division'],
+        ':reg_record' => $report['reg_record'],
+        ':sending_record' => $report['sending_record'],
+        ':error_record' => $report['error_record'],
+        ':remarks' => $report['remarks'],
+        ':after_success_record' => $report['after_success_record'],
+        ':before_success_record' => $report['before_success_record'],
+        ':after_duplicates_record' => $report['after_duplicates_record'],
+        ':before_duplicates_record' => $report['before_duplicates_record'],
+        ':adult_record' => $report['adult_record'],
+        ':child_record' => $report['child_record'],
+        ':recap_record' => $report['recap_record'],
+        ':online_record' => $report['online_record'],
+        ':child_to_adult_record' => $report['child_to_adult_record']
+    ]);
+}
 }

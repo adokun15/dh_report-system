@@ -28,10 +28,17 @@ class ReportController
             'division' => trim($data['division']),
             'reg_record' => trim($data['registration_count']),
             'sending_record' => trim($data['sending_count']),
-            'duplicates_record' => trim($data['duplicates_count']),
             'error_record' => trim($data['error_count']),
-            'success_record' => trim($data['success_count']),
             'remarks' => trim($data['description']),
+            'after_success_record' => $data['after_success_count'],
+            'before_success_record' => $data['before_success_count'],
+            'after_duplicates_record' => $data['after_duplicates_count'],
+            'before_duplicates_record' => $data['before_duplicates_count'],
+            'adult_record' => $data['adult'],
+            'child_record' => $data['child'],
+            'recap_record' => $data['recap'],
+            'online_record' => $data['online'],
+            'child_to_adult_record' => $data['child_to_adult'],
         ];
         return $this->reportModel->createReport($report);
 }

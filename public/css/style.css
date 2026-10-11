@@ -199,24 +199,68 @@ input {
 
 /*2: Create Report*/
 .report_form {
-  width: 70%;
+  max-width: 70%;
   padding: 1.5rem;
   background-color: var(--background_light);
 }
 
+.report_form article {
+  margin: 2.1rem 0;
+}
+
+.report_form article:first-child {
+  margin: 0.5rem 0;
+}
+
+/*Additional classes*/
+.report_form .division_device {
+  margin: 0.95rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 0 2rem;
+}
+.report_form .report_records {
+  background-color: var(--background_light);
+}
+.report_form .report_records h3 {
+  margin: 1.2rem 0;
+}
+
+.report_records_once,
+.report_records_before > article,
+.report_records_after > article,
+.report_records_category > article {
+  display: flex;
+  margin: 1.2rem 0;
+  flex-wrap: wrap;
+}
+
+.report_records_before > h4,
+.report_records_after > h4 {
+  font-weight: 600;
+}
 .report_form > div {
   margin-bottom: 1.3rem;
 }
 
+.report_form select {
+  background-color: var(--input);
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  outline: none;
+  font: inherit;
+}
+
 .report_form label {
   display: block;
+  text-transform: capitalize;
   margin-bottom: 0.5rem;
-  font-weight: 600;
 }
 
 .report_form textarea {
   width: 100%;
-  min-height: 250px;
+  min-height: 200px;
   resize: vertical;
   background-color: var(--input);
   padding: 0.75rem;
@@ -232,6 +276,10 @@ input {
 
 .report_form a {
   margin-left: 1rem;
+}
+
+.report_form input {
+  width: 80%;
 }
 
 /*Single Report*/
@@ -261,15 +309,7 @@ input {
   color: var(--muted);
 }
 
-/*Create */
-.report_form select {
-  width: 100%;
-  background-color: var(--input);
-  padding: 0.6rem 0.75rem;
-  border-radius: 0.5rem;
-  outline: none;
-  font: inherit;
-}
+/*QWEN*/
 
 @media (prefers-color-scheme: dark) {
   :root {

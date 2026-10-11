@@ -8,7 +8,6 @@
  
 <?php require __DIR__ . '/../components/head.php'; ?>
 <section class='section dashboard'>
-
 <!-- Navigate -->
 <nav class='nav'>
     <p class='nav_title'>Date Harvest Reports</p>         
