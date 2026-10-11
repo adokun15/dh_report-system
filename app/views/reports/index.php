@@ -8,6 +8,11 @@ $reportController = new ReportController($pdo);
 //$reports = $reportController->all();
 //$user_reports = $reportController->userReports();
 
+// Handle downloads before any HTML is rendered.
+if (($_GET['export'] ?? '') === 'csv') {
+    $reportController->exportCsv();
+}
+
 $result = $reportController->getReportsPage();
 
 $reports = $result['reports'];
@@ -15,6 +20,7 @@ $filters = $result['filters'];
 $page = $result['page'];
 $totalPages = $result['total_pages'];
 $totalReports = $result['total_reports'];
+
 ?>
 
 <?php require __DIR__ . '/../../components/head.php'; ?>
@@ -42,9 +48,22 @@ $totalReports = $result['total_reports'];
             <div>
                 <h2>All Reports</h2>
             </div>
-            <a href="./reports/create.php">
-                Submit Report
-            </a>
+    <div>
+        <?php
+$exportQuery = $filters;
+$exportQuery['export'] = 'csv';
+?>
+
+<a
+href="?<?= htmlspecialchars(http_build_query($exportQuery)) ?>"
+    class="export_csv"
+>
+Export CSV
+</a>
+<a href="./reports/create.php">
+    Submit Report
+</a>
+</div>
     </header>
 
     

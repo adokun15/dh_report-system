@@ -465,4 +465,29 @@ public function countFilteredReports($filters, $userId = null)
     return (int) $stmt->fetchColumn();
 }
 
+public function getReportsForExport($filters, $userId = null)
+{
+    [$where, $params] = $this->buildReportConditions(
+        $filters,
+        $userId
+    );
+
+    $sql = "SELECT
+            reports.*,
+            users.name AS user_name,
+            auth.email AS user_email
+        FROM reports
+        INNER JOIN users
+            ON reports.author_id = users.user_id
+        INNER JOIN auth
+            ON reports.author_id = auth.user_id
+        $where
+        ORDER BY reports.created_at DESC
+    ";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute($params);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }
