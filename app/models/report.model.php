@@ -358,4 +358,111 @@ public function createReport($report)
         ':child_to_adult_record' => $report['child_to_adult_record']
     ]);
 }
+
+//AISLOPP
+private function buildReportConditions($filters, $userId = null)
+{
+    $where = " WHERE 1 = 1 ";
+    $params = [];
+
+    // Staff can only access their own reports.
+    if ($userId !== null) {
+        $where .= " AND reports.author_id = :author_id";
+        $params[':author_id'] = $userId;
+    }
+
+    if (!empty($filters['search'])) {
+        $where .= " AND (
+            reports.system_id LIKE :search_system
+            OR reports.enrolment_officer_name LIKE :search_name
+            OR reports.enrolment_officer_phone LIKE :search_phone
+        )";
+
+        $search = '%' . $filters['search'] . '%';
+
+        $params[':search_system'] = $search;
+        $params[':search_name'] = $search;
+        $params[':search_phone'] = $search;
+    }
+
+    if (!empty($filters['division'])) {
+        $where .= " AND reports.division_place = :division";
+        $params[':division'] = $filters['division'];
+    }
+
+    if (!empty($filters['device'])) {
+        $where .= " AND reports.device = :device";
+        $params[':device'] = $filters['device'];
+    }
+
+    if (!empty($filters['date_from'])) {
+        $where .= " AND reports.created_at >= :date_from";
+        $params[':date_from'] = $filters['date_from'];
+    }
+
+    if (!empty($filters['date_to'])) {
+        $where .= " AND reports.created_at < DATE_ADD(:date_to, INTERVAL 1 DAY)";
+        $params[':date_to'] = $filters['date_to'];
+    }
+
+    return [$where, $params];
+}
+
+
+public function getPaginatedReports(
+    $filters,
+    $userId = null,
+    $limit = 10,
+    $offset = 0
+) {
+    [$where, $params] = $this->buildReportConditions($filters, $userId);
+
+    $sql = "
+        SELECT
+            reports.*,
+            users.photo AS user_photo,
+            users.role AS user_role,
+            users.name AS user_name,
+            auth.email AS user_email
+        FROM reports
+        INNER JOIN users
+            ON reports.author_id = users.user_id
+        INNER JOIN auth
+            ON reports.author_id = auth.user_id
+        $where
+        ORDER BY reports.created_at DESC
+        LIMIT :limit OFFSET :offset
+    ";
+
+    $stmt = $this->db->prepare($sql);
+
+    foreach ($params as $key => $value) {
+        $stmt->bindValue($key, $value);
+    }
+
+    $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
+
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+public function countFilteredReports($filters, $userId = null)
+{
+    [$where, $params] = $this->buildReportConditions($filters, $userId);
+
+    $sql = "
+        SELECT COUNT(*)
+        FROM reports
+        $where
+    ";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute($params);
+
+    return (int) $stmt->fetchColumn();
+}
+
 }

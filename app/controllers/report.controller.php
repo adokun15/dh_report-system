@@ -55,12 +55,112 @@ public function userReports(){
 //all reports
 public function all()
 {
-    if ($_SESSION['role'] !== 'admin') {
+    $role = $_SESSION['role'] ?? '';
+    $userId = $role === 'staff'
+        ? ($_SESSION['user_id'] ?? null)
+        : null;
+
+    if ($role !== 'admin' && $role !== 'staff') {
         http_response_code(403);
         exit('Forbidden');
     }
-    return $this->reportModel->getAllReports();
- 
+
+    $filters = [
+        'search' => trim($_GET['search'] ?? ''),
+        'division' => $_GET['division'] ?? '',
+        'device' => $_GET['device'] ?? '',
+        'date_from' => $_GET['date_from'] ?? '',
+        'date_to' => $_GET['date_to'] ?? '',
+    ];
+
+    // Only accept known filter values.
+    $validDivisions = [
+        'ikeja', 'lagos_island', 'badagry',
+        'epe', 'ikorodu', 'hq'
+    ];
+
+    $validDevices = ['cpu', 'laptop', 'android'];
+
+    if (!in_array($filters['division'], $validDivisions, true)) {
+        $filters['division'] = '';
+    }
+
+    if (!in_array($filters['device'], $validDevices, true)) {
+        $filters['device'] = '';
+    }
+
+    // Validate date formats before passing them to SQL.
+    foreach (['date_from', 'date_to'] as $key) {
+        $date = $filters[$key];
+
+        if ($date !== '') {
+            $parsed = DateTime::createFromFormat('!Y-m-d', $date);
+
+            if (!$parsed || $parsed->format('Y-m-d') !== $date) {
+                $filters[$key] = '';
+            }
+        }
+    }
+
+    if (
+        $filters['date_from'] !== '' &&
+        $filters['date_to'] !== '' &&
+        $filters['date_from'] > $filters['date_to']
+    ) {
+        $filters['date_from'] = '';
+        $filters['date_to'] = '';
+    }
+
+    return [
+        'filters' => $filters,
+        'user_id' => $userId,
+    ];
+}
+
+
+public function getReportsPage()
+{
+    $context = $this->all();
+
+    $filters = $context['filters'];
+    $userId = $context['user_id'];
+
+    $perPage = 10;
+    $page = filter_input(
+        INPUT_GET,
+        'page',
+        FILTER_VALIDATE_INT
+    );
+
+    $page = ($page && $page > 0) ? $page : 1;
+
+    $totalReports = $this->reportModel->countFilteredReports(
+        $filters,
+        $userId
+    );
+
+    $totalPages = max(1, (int) ceil($totalReports / $perPage));
+
+    // Prevent requests for pages beyond the available results.
+    $page = min($page, $totalPages);
+
+    $offset = ($page - 1) * $perPage;
+
+    $reports = $this->reportModel->getPaginatedReports(
+        $filters,
+        $userId,
+        $perPage,
+        $offset
+    );
+
+    return [
+        'reports' => $reports,
+        'filters' => $filters,
+        'page' => $page,
+        'per_page' => $perPage,
+        'total_reports' => $totalReports,
+        'total_pages' => $totalPages,
+    ];
 }
 
 //Single Data: 

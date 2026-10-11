@@ -461,6 +461,50 @@ input {
   text-decoration: underline;
 }
 
+/*REPORT LIST: SLOPPY JOES*/
+.report-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+.report-filters input,
+.report-filters select,
+.report-filters button {
+  padding: 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.report-filters button {
+  background: var(--primary);
+  color: white;
+  cursor: pointer;
+}
+
+.results-count {
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 1.5rem 0;
+}
+
+.pagination a {
+  padding: 0.5rem 0.75rem;
+}
+
+.pagination .disabled {
+  opacity: 0.5;
+}
+
 /*2: Create Report*/
 .report_form {
   max-width: 70%;
