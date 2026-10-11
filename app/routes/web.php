@@ -13,6 +13,16 @@ switch($route){
             require_once  __DIR__ . "/../views/login.php";
     break;
     
+    //Actions
+    case '/dashboard/reports/create':
+        require_once   __DIR__ . "/../views/reports/report_create.php";
+    break;
+
+    case '/dashboard/users/create':
+        require_once   __DIR__ . "/../views/users/user_create.php";
+    break;
+
+    //SINGLE date display!
     case '/dashboard/reports/view':
         require_once   __DIR__ . "/../views/reports/report_view.php";
     break;

@@ -16,13 +16,22 @@ class ReportController
     }
         
     //Create Report Data
-        public function create($data){
-        $report = [
-            'report_id' => $this->generateUuid(),
-            'user_id' => $_SESSION['user_id'],
-            'title' => trim($data['title']),
-            'description' => trim($data['description']),
-            'report_date' => $data['report_date']
+    public function create($data){
+    $now = new DateTime();
+//$now->format('Y-m-d H:i:s');
+     $report = [
+            'author_id' => $_SESSION['user_id'],
+            'device' => trim($data['device']),
+            'system_id' => trim($data['system_id']),
+            'enrolment_officer_name' => $data['enrollment_name'],
+            'enrolment_officer_phone' => trim($data['enrollment_phone']),
+            'division' => trim($data['division']),
+            'reg_record' => trim($data['registration_count']),
+            'sending_record' => trim($data['sending_count']),
+            'duplicates_record' => trim($data['duplicates_count']),
+            'error_record' => trim($data['error_count']),
+            'success_record' => trim($data['success_count']),
+            'remarks' => trim($data['description']),
         ];
         return $this->reportModel->createReport($report);
 }
