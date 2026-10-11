@@ -52,17 +52,17 @@ public function getReportsByUser($userId)
   }
 
 public function getReportsByDivision()
+//Coalesce(SUM(reg_record), 0) AS registrations,
+//Coalesce(SUM(success_record), 0) AS successful,
+//Coalesce(SUM(duplicates_record), 0) AS duplicates
    {
     $sql = "
     SELECT
     division_place,
-    Coalesce(SUM(reg_record), 0) AS registrations,
-    Coalesce(SUM(success_record), 0) AS successful,
-    Coalesce(SUM(error_record), 0) AS errors,
-    Coalesce(SUM(duplicates_record), 0) AS duplicates
+    Coalesce(SUM(error_record), 0) AS errors
 FROM reports
 GROUP BY division_place
-ORDER BY registrations DESC;
+ORDER BY reg_record DESC;
 ";
     $stmt = $this->db->query($sql);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -70,12 +70,12 @@ ORDER BY registrations DESC;
 
 public function getReportsStatForAdmin(){
  
+    //COALESCE(SUM(success_record), 0) AS successful,
+    //COALESCE(SUM(reg_record), 0) AS registrations,
+    //COALESCE(SUM(duplicates_record), 0) AS duplicates
     $sql = "      
-    SELECT
-    COALESCE(SUM(reg_record), 0) AS registrations,
-    COALESCE(SUM(success_record), 0) AS successful,
-    COALESCE(SUM(error_record), 0) AS errors,
-    COALESCE(SUM(duplicates_record), 0) AS duplicates
+    SELECT 
+    COALESCE(SUM(error_record), 0) AS errors
     FROM reports
 ";
 
@@ -233,12 +233,12 @@ return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 public function getReportsStatForStaff($user_id)
    {
+       // COALESCE(SUM(reg_record), 0) AS registrations,
+       // COALESCE(SUM(success_record), 0) AS successful,
+       // COALESCE(SUM(duplicates_record), 0) AS duplicates
     $sql = "
   SELECT
-    COALESCE(SUM(reg_record), 0) AS registrations,
-    COALESCE(SUM(success_record), 0) AS successful,
-    COALESCE(SUM(error_record), 0) AS errors,
-    COALESCE(SUM(duplicates_record), 0) AS duplicates
+    COALESCE(SUM(error_record), 0) AS errors
 FROM reports
 WHERE author_id = :user_id;  
 ";

@@ -148,24 +148,25 @@ input {
   margin-top: 3.3rem;
   min-width: 80%;
 }
-/*Dashboard summary*/
 
+/*Dashboard summary*/
 .dashboard-filter {
   display: flex;
+  justify-self: center;
   align-items: end;
   flex-wrap: wrap;
   gap: 16px;
-  margin-bottom: 24px;
+  width: 80%;
+  margin: 48px auto;
   padding: 18px;
-  background: #fff;
-  border: 1px solid #e8e5e1;
+  margin: 2rem 0;
+  background-color: var(--background_light);
   border-radius: 14px;
 }
 
 .dashboard-filter label {
   display: block;
   margin-bottom: 7px;
-  color: #66615c;
   font-size: 13px;
 }
 
@@ -173,9 +174,8 @@ input {
 .dashboard-filter input {
   min-height: 42px;
   padding: 0 12px;
-  border: 1px solid #ddd8d2;
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: #fff;
   font: inherit;
 }
 
@@ -190,7 +190,7 @@ input {
   padding: 0 20px;
   border: none;
   border-radius: 8px;
-  background: #d97732;
+  background: var(--primary);
   color: #fff;
   font-weight: 600;
   cursor: pointer;
@@ -198,6 +198,8 @@ input {
 
 .summary-grid {
   display: grid;
+  width: 80%;
+  justify-self: center;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
 }
@@ -207,7 +209,7 @@ input {
   padding: 22px;
   border: 1px solid #e9e5e0;
   border-radius: 16px;
-  background: #fff;
+  background: var(--background_light);
 }
 
 .card-icon {
@@ -222,19 +224,19 @@ input {
 
 .summary-card p {
   margin: 18px 0 8px;
-  color: #716b65;
+
   font-size: 14px;
 }
 
 .summary-card h2 {
   margin: 0 0 8px;
-  color: #25221f;
+
   font-size: 30px;
   font-weight: 700;
 }
 
 .summary-card span {
-  color: #89827c;
+  color: var(--muted);
   font-size: 12px;
 }
 
@@ -257,6 +259,156 @@ input {
 .icon-purple {
   background: #f0e8ff;
   color: #7543ba;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
+  gap: 20px;
+  width: 80%;
+  margin-top: 24px;
+  align-items: start;
+  justify-self: center;
+}
+
+.analytics-card {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid var(--primary);
+  border-radius: 16px;
+  background: var(--background_light);
+}
+
+.analytics-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.analytics-heading h3 {
+  margin: 0 0 7px;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.analytics-heading p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.analytics-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #fff0e3;
+  color: var(--primary);
+  font-size: 22px;
+}
+
+.division-list,
+.device-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.division-item,
+.device-item {
+  min-width: 0;
+}
+
+.division-meta,
+.device-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.division-name,
+.device-meta span {
+  color: var(--primary-bg70);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.division-meta strong,
+.device-meta strong {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.progress-track {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: #f0ede9;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--primary);
+  transition: width 0.3s ease;
+}
+
+.division-reports,
+.device-percentage {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.top-device {
+  margin-bottom: 28px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #fff5eb;
+}
+
+.top-device-label {
+  color: var(--primary);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.top-device h2 {
+  margin: 12px 0 6px;
+  color: #30251d;
+  font-size: 26px;
+  text-transform: capitalize;
+}
+
+.top-device p {
+  margin: 0;
+  color: #796b60;
+  font-size: 13px;
+}
+
+.device-list {
+  gap: 20px;
+}
+
+.device-track {
+  height: 6px;
+}
+
+.device-fill {
+  background: var(--primary);
+}
+
+.empty-state {
+  color: #89827c;
+  font-size: 13px;
 }
 
 /*Dashboard summary end*/
@@ -459,5 +611,11 @@ input {
   .filter-button {
     width: 100%;
     box-sizing: border-box;
+  }
+}
+
+@media (max-width: 900px) {
+  .analytics-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
