@@ -66,10 +66,77 @@ public function show($reportId)
         return $this->reportModel->getSingleReportByUserId(
             $reportId,
             $_SESSION['user_id']
-        );
+            );
         } else {
-        return $this->reportModel->getSingleReportByAdmin($reportId);
+            return $this->reportModel->getSingleReportByAdmin($reportId);
     }
+}
+
+public function dashboard($reportId)
+{
+$period = $_GET['period'] ?? 'all_time';
+
+$today = new DateTimeImmutable('today');
+
+switch ($period) {
+    case 'today':
+        $startDate = $today->format('Y-m-d');
+        $endDate = $startDate;
+        break;
+
+    case 'week':
+        $startDate = $today->modify('monday this week')->format('Y-m-d');
+        $endDate = $today->format('Y-m-d');
+        break;
+
+    case 'month':
+        $startDate = $today->modify('first day of this month')->format('Y-m-d');
+        $endDate = $today->format('Y-m-d');
+        break;
+
+    case 'year':
+        $startDate = $today->format('Y-01-01');
+        $endDate = $today->format('Y-m-d');
+        break;
+
+    case 'custom':
+        $startDate = $_GET['start_date'] ?? '';
+        $endDate = $_GET['end_date'] ?? '';
+
+        if (
+            !preg_match('/^\d{4}-\d{2}-\d{2}$/', $startDate) ||
+            !preg_match('/^\d{4}-\d{2}-\d{2}$/', $endDate) ||
+            $startDate > $endDate ||
+            $endDate > $today->format('Y-m-d')
+        ) {
+            $period = 'all_time';
+            $startDate = null;
+            $endDate = null;
+        }
+        break;
+
+    default:
+        $period = 'all_time';
+        $startDate = null;
+        $endDate = null;
+}
+
+$summary = $this->reportModel->getDashboardSummary(
+    $startDate,
+    $endDate
+);
+
+$divisionPerformance = $this->reportModel->getDivisionPerformance(
+    $startDate,
+    $endDate,
+    $authorId
+);
+
+$deviceUsage = $this->reportModel->getDeviceUsage(
+    $startDate,
+    $endDate,
+    $authorId
+);
 }
 
 //Helper Function!

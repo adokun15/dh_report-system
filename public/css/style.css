@@ -148,6 +148,118 @@ input {
   margin-top: 3.3rem;
   min-width: 80%;
 }
+/*Dashboard summary*/
+
+.dashboard-filter {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #e8e5e1;
+  border-radius: 14px;
+}
+
+.dashboard-filter label {
+  display: block;
+  margin-bottom: 7px;
+  color: #66615c;
+  font-size: 13px;
+}
+
+.dashboard-filter select,
+.dashboard-filter input {
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid #ddd8d2;
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+}
+
+.custom-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.filter-button {
+  min-height: 42px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 8px;
+  background: #d97732;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.summary-card {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid #e9e5e0;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.card-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.summary-card p {
+  margin: 18px 0 8px;
+  color: #716b65;
+  font-size: 14px;
+}
+
+.summary-card h2 {
+  margin: 0 0 8px;
+  color: #25221f;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.summary-card span {
+  color: #89827c;
+  font-size: 12px;
+}
+
+.icon-blue {
+  background: #e8efff;
+  color: #4169c8;
+}
+.icon-green {
+  background: #e2f6e9;
+  color: #238348;
+}
+.icon-orange {
+  background: #fff0db;
+  color: #c87918;
+}
+.icon-red {
+  background: #ffe7e5;
+  color: #c63c32;
+}
+.icon-purple {
+  background: #f0e8ff;
+  color: #7543ba;
+}
+
+/*Dashboard summary end*/
 
 /*Ai chat!*/
 /* GENERATE: Styling for the all reports page */
@@ -322,5 +434,30 @@ input {
     --border: #2e303a;
     --shadow-bg:
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+}
+
+@media (max-width: 900px) {
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-filter,
+  .custom-dates {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .dashboard-filter select,
+  .dashboard-filter input,
+  .filter-button {
+    width: 100%;
+    box-sizing: border-box;
   }
 }

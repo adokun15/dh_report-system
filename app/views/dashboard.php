@@ -3,8 +3,6 @@
   session_start();
   require __DIR__ . '/../controllers/dashboard.controller.php';
 ?>
-
-
  
 <?php require __DIR__ . '/../components/head.php'; ?>
 <section class='section dashboard'>
@@ -33,81 +31,74 @@
         </ul>
 </nav>
 
-    <!-- Main content -->
-<main class='dashboard centered_layout'>
-        <!-- Quick action -->
-        <section class="dashboard_intro">
-            <div>
-                <h2>Welcome <?= htmlspecialchars($get_user['name'])?></h2>
-                <p>View and analyse all submitted reports.</p>
-            </div>
 
-            <a href="dashboard/reports/create">
-                View Reports
-            </a>
-        </section>
-        
-        <!-- Report Insight -->
-        <section class="report_insight">
-        <div class="report_insight_header">
-            <h2>Report Summary</h2>  
-            <p>All time</p>
+<form method="GET" class="dashboard-filter">
+    <div>
+        <label for="period">Reporting period</label>
+        <select name="period" id="period" onchange="toggleCustomDates(this.value)">
+            <option value="all_time" <?= $period === 'all_time' ? 'selected' : '' ?>>All time</option>
+            <option value="today" <?= $period === 'today' ? 'selected' : '' ?>>Today</option>
+            <option value="week" <?= $period === 'week' ? 'selected' : '' ?>>This week</option>
+            <option value="month" <?= $period === 'month' ? 'selected' : '' ?>>This month</option>
+            <option value="year" <?= $period === 'year' ? 'selected' : '' ?>>This year</option>
+            <option value="custom" <?= $period === 'custom' ? 'selected' : '' ?>>Custom range</option>
+        </select>
+    </div>
+
+    <div id="custom-dates" class="custom-dates"
+         style="<?= $period === 'custom' ? '' : 'display:none' ?>">
+        <div>
+            <label for="start_date">From</label>
+            <input type="date" id="start_date" name="start_date"
+                   value="<?= htmlspecialchars($startDate ?? '') ?>">
         </div>
-        <div class="report_insight_list">
-            <article class="report_insight_card card">
-                <h3>Total Registration</h3>
-                <p><?= htmlspecialchars($get_insight['registrations']) ?></p>
-            </article>   
-            <article class="report_insight_card card">
-                <h3>Successful</h3>
-             <p><?= $get_insight['successful'] ?></p>
-            </article>   
-            <article class="report_insight_card card">
-                <h3>Duplicate</h3>
-                  <p><?= $get_insight['duplicates'] ?></p>
-            </article>
-            <article class="report_insight_card card">
-                <h3>Error</h3>
-             <p><?= $get_insight['errors'] ?></p>
-            </article>   
-        </div>  
-    </section>
 
-        <!-- Top Recent Report: Card styling -->
-        <?php if($role === 'staff'): ?>
-            <section class="recent_reports">
-                <div class="recent_reports_header">
-                <h2>Your Recent Reports</h2>
-                <a href="dashboard/reports">
-                    View all
-                </a>
-            </div>
-            
-            <?php if(!isset($get_recent_reports)): ?>
-                <div class="recent_reports_empty card">
-                    <p>You haven't submitted any reports yet.</p>
-                <a href="dashboard/reports/create.php">
-                    Submit your first report
-                </a>
-            </div>
-            <?php else: ?>
-                <div class="recent_reports_list card">
-                    <?php foreach ($get_recent_reports as $r): ?>
-                        <p><?= $r['receiver_phone'] ?></p> 
-                        <?php endforeach ?>    
-                    </div>
-           <?php endif; ?>
-        </section>
-        <?php endif ?>
-        
-        <!--Division Grouping -->
-        <?php if($role && $role === 'admin'): ?>
-         <h2> Division Summary </h2>  
-        <?php endif ?>
+        <div>
+            <label for="end_date">To</label>
+            <input type="date" id="end_date" name="end_date"
+                   value="<?= htmlspecialchars($endDate ?? '') ?>">
+        </div>
+    </div>
 
+    <button type="submit" class="filter-button">Apply filter</button>
+</form>
 
-    </main>
+<section class="summary-grid">
+    <article class="summary-card">
+        <div class="card-icon icon-blue">▤</div>
+        <p>Total Reports</p>
+        <h2><?= number_format((int) $summary['total_reports']) ?></h2>
+        <span>Reports submitted</span>
+    </article>
 
+    <article class="summary-card">
+        <div class="card-icon icon-green">✓</div>
+        <p>Successful Records</p>
+        <h2><?= number_format((int) $summary['total_success']) ?></h2>
+        <span>After-sync total</span>
+    </article>
+
+    <article class="summary-card">
+        <div class="card-icon icon-orange">⧉</div>
+        <p>Duplicate Records</p>
+        <h2><?= number_format((int) $summary['total_duplicates']) ?></h2>
+        <span>After-sync total</span>
+    </article>
+
+    <article class="summary-card">
+        <div class="card-icon icon-red">!</div>
+        <p>Error Records</p>
+        <h2><?= number_format((int) $summary['total_errors']) ?></h2>
+        <span>Reported errors</span>
+    </article>
+
+    <article class="summary-card">
+        <div class="card-icon icon-purple">♙</div>
+        <p>Active Reporting Staff</p>
+        <h2><?= number_format((int) $summary['active_staff']) ?></h2>
+        <span>Staff who submitted reports</span>
+    </article>
 </section>
 
+</section>
 <?php require __DIR__ . '/../components/bottom.php'; ?>

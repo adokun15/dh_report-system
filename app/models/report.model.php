@@ -83,6 +83,134 @@ public function getReportsStatForAdmin(){
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+
+//newww
+
+public function getDashboardSummary($startDate = null, $endDate = null)
+{
+    $sql = "
+        SELECT
+            COUNT(*) AS total_reports,
+            COALESCE(SUM(after_success_record), 0) AS total_success,
+            COALESCE(SUM(after_duplicates_record), 0) AS total_duplicates,
+            COALESCE(SUM(error_record), 0) AS total_errors,
+            COUNT(DISTINCT author_id) AS active_staff
+        FROM reports
+        WHERE 1 = 1
+    ";
+
+    $params = [];
+
+    if ($startDate && $endDate) {
+        $sql .= "AND created_at >= :start_date
+                  AND created_at < DATE_ADD(:end_date, INTERVAL 1 DAY)";
+
+        $params[':start_date'] = $startDate;
+        $params[':end_date'] = $endDate;
+    }
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute($params);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
+public function getDivisionPerformance(
+    $startDate = null,
+    $endDate = null,
+    $authorId = null
+) {
+    $sql = "
+        SELECT
+            division_place,
+            SUM(before_success_record) AS before_success,
+            SUM(after_success_record) AS after_success,
+            COUNT(*) AS total_reports,
+            CASE
+                WHEN SUM(before_success_record) > 0
+                THEN ROUND(
+                    SUM(after_success_record) * 100.0
+                    / SUM(before_success_record), 1
+                )
+                ELSE NULL
+            END AS success_rate
+        FROM reports
+        WHERE 1 = 1
+    ";
+
+    $params = [];
+
+    if ($startDate && $endDate) {
+        $sql .= " AND created_at >= :start_date
+                  AND created_at < DATE_ADD(:end_date, INTERVAL 1 DAY)";
+
+        $params[':start_date'] = $startDate;
+        $params[':end_date'] = $endDate;
+    }
+
+    if ($authorId !== null) {
+        $sql .= " AND author_id = :author_id";
+        $params[':author_id'] = $authorId;
+    }
+
+    $sql .= "
+        GROUP BY division_place
+        ORDER BY success_rate DESC
+    ";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute($params);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+public function getDeviceUsage(
+    $startDate = null,
+    $endDate = null,
+    $authorId = null
+) {
+    $sql = "
+        SELECT
+            device,
+            COUNT(*) AS total_reports,
+            ROUND(
+                COUNT(*) * 100.0 /
+                NULLIF(SUM(COUNT(*)) OVER (), 0),
+                1
+            ) AS usage_percentage
+        FROM reports
+        WHERE 1 = 1
+    ";
+
+    $params = [];
+
+    if ($startDate && $endDate) {
+        $sql .= " AND created_at >= :start_date
+                  AND created_at < DATE_ADD(:end_date, INTERVAL 1 DAY)";
+
+        $params[':start_date'] = $startDate;
+        $params[':end_date'] = $endDate;
+    }
+
+    if ($authorId !== null) {
+        $sql .= " AND author_id = :author_id";
+        $params[':author_id'] = $authorId;
+    }
+
+    $sql .= "
+        GROUP BY device
+        ORDER BY total_reports DESC
+    ";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute($params);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
 public function getRecentReports($user_id)
    {
     $sql = "
