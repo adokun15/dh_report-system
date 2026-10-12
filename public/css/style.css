@@ -627,7 +627,137 @@ input {
   color: var(--muted);
 }
 
-/*QWEN*/
+/*create user slop*/
+.create-user {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.create-user__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.create-user__header h1 {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+}
+
+.create-user__header p {
+  margin: 0;
+  color: #777;
+}
+
+.create-user__form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 28px;
+  border: 1px solid #e8e3dc;
+  border-radius: 12px;
+  background: var(--background_light);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid #d8d4ce;
+  border-radius: 7px;
+  background: var(--input);
+  font: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: 2px solid #e6a15a;
+  outline-offset: 1px;
+}
+
+.default-password {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border-radius: 8px;
+  background: var(--background_light);
+}
+
+.default-password p {
+  margin: 6px 0;
+  font-weight: 600;
+}
+
+.default-password small {
+  color: #777;
+}
+
+.default-password__icon {
+  font-size: 1.3rem;
+}
+
+.create_user_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 7px;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+
+  background: var(--primary);
+}
+
+.create_user_btn:hover {
+  color: var(--primary-bg90);
+}
+
+.btn-secondary {
+  color: #333;
+  background: #f1eee9;
+}
+
+.form-error {
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #fff0f0;
+  color: #a32626;
+}
+/*Create user slop*/
+
+@media (max-width: 600px) {
+  .create-user {
+    padding: 20px 12px;
+  }
+
+  .create-user__header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .create-user__form {
+    padding: 20px 16px;
+  }
+}
 
 @media (prefers-color-scheme: dark) {
   :root {

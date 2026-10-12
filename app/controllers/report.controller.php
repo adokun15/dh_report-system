@@ -162,33 +162,39 @@ public function getReportsPage()
         'total_pages' => $totalPages,
     ];
 }
-
-public function exportCsv()
+//Single Data: 
+public function show($reportId)
+{
+    if($_SESSION['role'] === 'staff'){
+        return $this->reportModel->getSingleReportByUserId(
+            $reportId,
+            $_SESSION['user_id']
+            );
+        } else {
+            return $this->reportModel->getSingleReportByAdmin($reportId);
+            }
+            }
+            
+            public function exportCsv()
 {
     $context = $this->all();
 
     $filters = $context['filters'];
     $userId = $context['user_id'];
 
-    $reports = $this->reportModel->getReportsForExport(
-        $filters,
-        $userId
-    );
-
     $filename = 'reports_' . date('Y-m-d_H-i-s') . '.csv';
 
-    // Prevent browsers from treating the CSV as an HTML page.
     header('Content-Type: text/csv; charset=UTF-8');
     header(
         'Content-Disposition: attachment; filename="' .
         $filename . '"'
     );
     header('X-Content-Type-Options: nosniff');
-    header('Cache-Control: no-store, no-cache, must-revalidate');
+    header('Cache-Control: no-store');
 
     $output = fopen('php://output', 'w');
 
-    // Helps Excel recognize UTF-8 text.
+    // UTF-8 BOM for spreadsheet compatibility.
     fwrite($output, "\xEF\xBB\xBF");
 
     fputcsv($output, [
@@ -215,65 +221,68 @@ public function exportCsv()
         'Remarks',
     ]);
 
-    foreach ($reports as $report) {
-        $row = [
-            $report['report_id'],
-            $report['created_at'],
-            $report['user_name'],
-            $report['division_place'],
-            $report['system_id'],
-            $report['enrolment_officer_name'],
-            $report['enrolment_officer_phone'],
-            $report['device'],
-            $report['reg_record'],
-            $report['sending_record'],
-            $report['error_record'],
-            $report['before_success_record'],
-            $report['after_success_record'],
-            $report['before_duplicates_record'],
-            $report['after_duplicates_record'],
-            $report['adult_record'],
-            $report['child_record'],
-            $report['recap_record'],
-            $report['online_record'],
-            $report['child_to_adult_record'],
-            $report['remarks'],
-        ];
+    $rowCount = 0;
 
-        // Reduce the risk of spreadsheet formula injection
-        // from untrusted text fields.
-        foreach ($row as &$value) {
-            if (
-                is_string($value) &&
-                preg_match('/^[\s]*[=+\-@]/', $value)
-            ) {
-                $value = "'" . $value;
+    $this->reportModel->streamReportsForExport(
+        $filters,
+        $userId,
+        function ($report) use ($output, &$rowCount) {
+            $row = [
+                $report['report_id'],
+                $report['created_at'],
+                $report['user_name'],
+                $report['division_place'],
+                $report['system_id'],
+                $report['enrolment_officer_name'],
+                $report['enrolment_officer_phone'],
+                $report['device'],
+                $report['reg_record'],
+                $report['sending_record'],
+                $report['error_record'],
+                $report['before_success_record'],
+                $report['after_success_record'],
+                $report['before_duplicates_record'],
+                $report['after_duplicates_record'],
+                $report['adult_record'],
+                $report['child_record'],
+                $report['recap_record'],
+                $report['online_record'],
+                $report['child_to_adult_record'],
+                $report['remarks'],
+            ];
+
+            // Protect spreadsheet users from formula injection.
+            foreach ($row as &$value) {
+                if (
+                    is_string($value) &&
+                    preg_match('/^[\s]*[=+\-@]/', $value)
+                ) {
+                    $value = "'" . $value;
+                }
+            }
+            unset($value);
+
+            fputcsv($output, $row);
+
+            $rowCount++;
+
+            // Encourage the output to flush periodically.
+            if ($rowCount % 100 === 0) {
+                fflush($output);
+
+                if (ob_get_level() > 0) {
+                    @ob_flush();
+                }
+
+                flush();
             }
         }
-        unset($value);
-
-        fputcsv($output, $row);
-    }
+    );
 
     fclose($output);
     exit;
 }
-
-//Single Data: 
-public function show($reportId)
-{
-    if($_SESSION['role'] === 'staff'){
-        return $this->reportModel->getSingleReportByUserId(
-            $reportId,
-            $_SESSION['user_id']
-            );
-        } else {
-            return $this->reportModel->getSingleReportByAdmin($reportId);
-    }
-}
-
-
-//Helper Function!
+            //Helper Function!
     private function generateUuid()
     {
         return sprintf(
@@ -286,6 +295,104 @@ public function show($reportId)
             mt_rand(0, 0xffff),
             mt_rand(0, 0xffff),
             mt_rand(0, 0xffff)
-        );
+            );
     }
 }
+            /*
+            public function exportCsv()
+            {
+                $context = $this->all();
+            
+            
+                $filters = $context['filters'];
+                $userId = $context['user_id'];
+            
+                $reports = $this->reportModel->getReportsForExport(
+                    $filters,
+                    $userId
+                );
+            
+                $filename = 'reports_' . date('Y-m-d_H-i-s') . '.csv';
+            
+                // Prevent browsers from treating the CSV as an HTML page.
+                header('Content-Type: text/csv; charset=UTF-8');
+                header(
+                    'Content-Disposition: attachment; filename="' .
+                    $filename . '"'
+                );
+                header('X-Content-Type-Options: nosniff');
+                header('Cache-Control: no-store, no-cache, must-revalidate');
+            
+                $output = fopen('php://output', 'w');
+            
+                // Helps Excel recognize UTF-8 text.
+                fwrite($output, "\xEF\xBB\xBF");
+            
+                fputcsv($output, [
+                    'Report ID',
+                    'Date Submitted',
+                    'Submitted By',
+                    'Division',
+                    'System ID',
+                    'Enrolment Officer',
+                    'Phone',
+                    'Device',
+                    'Registration Records',
+                    'Sending Records',
+                    'Errors',
+                    'Before Success',
+                    'After Success',
+                    'Before Duplicates',
+                    'After Duplicates',
+                    'Adult',
+                    'Child',
+                    'Recap',
+                    'Online',
+                    'Child to Adult',
+                    'Remarks',
+                ]);
+            
+                foreach ($reports as $report) {
+                    $row = [
+                        $report['report_id'],
+                        $report['created_at'],
+                        $report['user_name'],
+                        $report['division_place'],
+                        $report['system_id'],
+                        $report['enrolment_officer_name'],
+                        $report['enrolment_officer_phone'],
+                        $report['device'],
+                        $report['reg_record'],
+                        $report['sending_record'],
+                        $report['error_record'],
+                        $report['before_success_record'],
+                        $report['after_success_record'],
+                        $report['before_duplicates_record'],
+                        $report['after_duplicates_record'],
+                        $report['adult_record'],
+                        $report['child_record'],
+                        $report['recap_record'],
+                        $report['online_record'],
+                        $report['child_to_adult_record'],
+                        $report['remarks'],
+                    ];
+            
+                    // Reduce the risk of spreadsheet formula injection
+                    // from untrusted text fields.
+                    foreach ($row as &$value) {
+                        if (
+                            is_string($value) &&
+                            preg_match('/^[\s]*[=+\-@]/', $value)
+                        ) {
+                            $value = "'" . $value;
+                        }
+                    }
+                    unset($value);
+            
+                    fputcsv($output, $row);
+                }
+            
+                fclose($output);
+                exit;
+            }
+            */

@@ -41,7 +41,6 @@ class UserController
     if (
         empty($data['name']) ||
         empty($data['email']) ||
-        empty($data['password']) ||
         empty($data['role'])
     ) {
         return false;
@@ -61,7 +60,7 @@ class UserController
         'name' => trim($data['name']),
         'email' => trim($data['email']),
         'password' => password_hash(
-            $data['password'],
+            'password123',
             PASSWORD_DEFAULT
         )
     ];

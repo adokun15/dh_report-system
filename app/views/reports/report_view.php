@@ -25,9 +25,7 @@ if (!$report) {
 
     <!-- GENERATE: Simple report detail page showing the report title, date, status, description, and back button -->
 
-    <nav class="nav dashboard_nav">
-        <p>Date Harvest Reports</p>
-    </nav>
+    <?php require __DIR__ . '/../../components/private_nav.php'; ?>
 
     <main class="dashboard_body">
         <a href="/dh_reports/dashboard/reports">

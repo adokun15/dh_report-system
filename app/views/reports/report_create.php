@@ -21,22 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php require __DIR__ . '/../../components/head.php'; ?>
 <section class="dashboard">
     <!-- GENERATE: Report creation page with a simple form for staff to submit a new report -->
-
-    <nav class="nav dashboard_nav">
-        <p>Date Harvest Reports</p>
-        <ul>
-            <li>
-                <a href="../dashboard">Dashboard</a>
-            </li>
-            <li>
-                <a href="./index.php">My Reports</a>
-            </li>
-            <li>
-                <a href="../auth/logout.php">Logout</a>
-            </li>
-        </ul>
-    </nav>
-
+    <?php require __DIR__ . '/../../components/private_nav.php'; ?>
 
     <main class="dashboard_body">
         <header class="reports_header">

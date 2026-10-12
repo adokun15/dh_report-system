@@ -30,17 +30,7 @@ $totalReports = $result['total_reports'];
 
     <!-- GENERATE: A simple staff reports page with a navigation header, page title, submit-report action, and reports table -->
 
-    <nav class="nav dashboard_nav">
-        <p>Date Harvest Reports</p>
-        <ul>
-            <li>
-                <a href="./dashboard">Dashboard</a>
-            </li>
-            <li>
-                <a href="./auth/logout.php">Logout</a>
-            </li>
-        </ul>
-    </nav>
+       <?php require __DIR__ . '/../../components/private_nav.php'; ?>
 
     <main class="dashboard_body centered">
         

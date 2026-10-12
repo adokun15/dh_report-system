@@ -11,18 +11,7 @@ $users = $userController->index();
 
 <section class="section">
 
-    <nav class="nav dashboard_nav">
-        <p>Date Harvest Reports</p>
-        <ul>
-            <li>
-                <?= htmlspecialchars($_SESSION['name']) ?>
-            </li>
-            <li>
-                <a href="../dashboard.php">Dashboard</a>
-            </li>
-        </ul>
-
-    </nav>
+    <?php require __DIR__ . '/../../components/private_nav.php'; ?>
 
     <main class="dashboard_body">
         <div>

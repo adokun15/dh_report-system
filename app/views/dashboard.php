@@ -72,29 +72,7 @@ $deviceUsage = $report->getDeviceUsage(
 <?php require __DIR__ . '/../components/head.php'; ?>
 <section class='section dashboard'>
 <!-- Navigate -->
-<nav class='nav'>
-    <p class='nav_title'>Date Harvest Reports</p>         
- <ul>
-            <li class="nav_link">
-                <a href="./dashboard">Dashboard</a>
-            </li>
-            <?php if ($role === 'staff'): ?>
-                <li class="nav_link">
-                    <a href="dashboard/reports">My Reports</a>
-                </li>
-                <?php elseif ($role === 'admin'): ?>
-                    <li class="nav_link">
-                        <a href="dashboard/reports">All Reports</a>
-                    </li>
-                    <li class="nav_link">
-                        <a href="dashboard/reports">All Staffs</a>
-                    </li>
-                    <?php endif; ?>
-                    <li class="nav_link">
-                <a class='logout' href="/logout">Logout</a>
-            </li>
-        </ul>
-</nav>
+<?php require __DIR__ . '/../components/private_nav.php'; ?>
 
 
 <form method="GET" class="dashboard-filter card">

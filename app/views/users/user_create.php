@@ -1,11 +1,5 @@
 <?php
-/*
 session_start();
-require_once __DIR__ . '/../../middleware/auth.php';
-requireAdmin();
-
-require_once __DIR__ . '/../../config/db.php';
-require_once __DIR__ . '/../../models/user.model.php';
 require_once __DIR__ . '/../../controllers/user.controller.php';
 
 $userController = new UserController($pdo);
@@ -13,94 +7,84 @@ $userController = new UserController($pdo);
 $error = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     $success = $userController->create($_POST);
-
-    if ($success) {
-        header('Location: ./index.php');
+   if ($success) {
+        header('Location: /dh_reports/dashboard/users');
         exit;
     }
-
     $error = 'Failed to create user.';
 }
-*/
 ?>
 
 <?php require __DIR__ . '/../../components/head.php'; ?>
+<main>
+    <?php require __DIR__ . '/../../components/private_nav.php'; ?>
+<section class="create-user">
+    <div class="create-user__header">
+        <div>
+            <h1>Create User</h1>
+            <p>Add an admin or staff member to the reporting system.</p>
+        </div>
 
-<section class="section">
+        <a href="/dh_reports/users" class="">
+            Back to Users
+        </a>
+    </div>
 
-    <nav class="nav">
-        <p>Date Harvest Reports</p>
-    </nav>
+    <?php if (!empty($errors)): ?>
+        <div class="form-error">
+            <?php foreach ($errors as $error): ?>
+                <p><?= htmlspecialchars($error) ?></p>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
 
-    <main class="dashboard_body">
+    <form
+        method="POST"
+        class="create-user__form"
+    >
+        <div class="form-group">
+            <label for="name">Username</label>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter full name"
+                required
+            >
+        </div>
 
-        <h2>Create User</h2>
+        <div class="form-group">
+            <label for="email">Email address</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="name@example.com"
+                required
+            >
+        </div>
 
-        <?php if ($error): ?>
-            <p class="error_text">
-                <?= htmlspecialchars($error) ?>
-            </p>
-        <?php endif; ?>
+        <div class="form-group">
+            <label for="role">User role</label>
+            <select id="role" name="role" required>
+                <option value="staff" selected>
+                    Staff
+                </option>
+                      </select>
+        </div>
 
-        <form method="POST" class="report_form">
-
-            <div>
-                <label>Name</label>
-
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Enter user's name"
-                    required
-                >
+        <div class="default-password">
+                <div>
+                <p> <strong>Default password</strong>: password123</p>
+                <small>This will be the user's initial login password.</small>
             </div>
+        </div>
 
-            <div>
-                <label>Email</label>
-
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Enter user's email"
-                    required
-                >
-            </div>
-
-            <div>
-                <label>Role</label>
-
-                <select name="role" required>
-                    <option value="">Select role</option>
-                    <option value="staff">Staff</option>
-                    <option value="admin">Admin</option>
-                </select>
-            </div>
-
-            <div>
-                <label>Password</label>
-
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Enter password"
-                    required
-                >
-            </div>
-
-            <button type="submit">
-                Create User
-            </button>
-
-            <a href="./index.php">
-                Cancel
-            </a>
-
-        </form>
-
-    </main>
-
+        <button class="create_user_btn">
+            Create User
+        </button>
+    </form>
 </section>
-
+            </main>
 <?php require __DIR__ . '/../../components/bottom.php'; ?>
