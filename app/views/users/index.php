@@ -13,60 +13,41 @@ $users = $userController->index();
 
     <?php require __DIR__ . '/../../components/private_nav.php'; ?>
 
-    <main class="dashboard_body">
-        <div>
+    <main class="dashboard_body centered">
+        <div class="reports_header">
             <h2>Users</h2>    
-            <a href="create">Create User</a>
+            <a href="users/create">Create User</a>
         </div>
         <!-- GENERATE: Users table -->
 
         <table class="users_table">
 
-            <thead>
+    <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
+                    <th>User</th>
                     <th>Role</th>
-                    <th>Reports</th>
-                    
+                    <th>Reports</th>                    
                 </tr>
             </thead>
-
-            <tbody>
-
-                <?php foreach ($users as $user): ?>
-
-                    <tr>
-
+ <tbody>
+                        <?php foreach ($users as $user): ?>  <tr>
+           <tr>
                         <td>
-                            <?= htmlspecialchars($user['name']) ?>
+                           <p> <?= htmlspecialchars($user['name']) ?></p>
+                            <p><?= htmlspecialchars($user['email']) ?></p>
                         </td>
-
-                        <td>
-                            <?= htmlspecialchars($user['email']) ?>
-                        </td>
-
                         <td>
                             <?= htmlspecialchars($user['role']) ?>
                         </td>
-                        
                         <td>
                             <?= htmlspecialchars($user['total_reports']) ?>
                         </td>
-
-                   <!--     <td>
-                            <a href="./edit.php?id=<?/*= urlencode($user['user_id']) */ ?>">
-                                Edit
-                            </a>
-                        </td>
-                -->
                     </tr>
 
-                <?php endforeach; ?>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
-            </tbody>
-
-        </table>
 
     </main>
 

@@ -21,38 +21,45 @@ $page = $result['page'];
 $totalPages = $result['total_pages'];
 $totalReports = $result['total_reports'];
 
+
+$exportQuery = $filters;
+$exportQuery['export'] = 'csv';
+
 ?>
 
 <?php require __DIR__ . '/../../components/head.php'; ?>
 
 
 <section class="dashboard">
-
-    <!-- GENERATE: A simple staff reports page with a navigation header, page title, submit-report action, and reports table -->
-
-       <?php require __DIR__ . '/../../components/private_nav.php'; ?>
-
+<?php require __DIR__ . '/../../components/private_nav.php'; ?>
     <main class="dashboard_body centered">
-        
     <header class="reports_header">
             <div>
-                <h2>All Reports</h2>
+                <h2>
+                <?php if($role && $role === 'staff'): ?>
+                    <span> My </span>
+                <?php else: ?>
+                    <span> All </span>
+                <?php endif; ?>
+                Reports
+            </h2>
             </div>
     <div>
-        <?php
-$exportQuery = $filters;
-$exportQuery['export'] = 'csv';
-?>
 
+
+                <?php if($role && $role === 'admin'): ?>
+                
 <a
 href="?<?= htmlspecialchars(http_build_query($exportQuery)) ?>"
     class="export_csv"
 >
 Export CSV
 </a>
-<a href="./reports/create.php">
+<?php else: ?>
+<a href="./reports/create">
     Submit Report
-</a>
+</a>        
+      <?php endif; ?>
 </div>
     </header>
 
@@ -60,6 +67,7 @@ Export CSV
 <form method="GET" class="report-filters">
     <input
         type="search"
+        class="report-filters__search"
         name="search"
         placeholder="Search system ID, officer or phone..."
         value="<?= htmlspecialchars($filters['search']) ?>"
@@ -131,15 +139,9 @@ Export CSV
 </p>
 
         
-        <section class="reports_table">
+    <section class="reports_table">
         <?php if (empty($reports)): ?>
-
-            <p>You haven't submitted any reports yet.</p>
-            
-            <a href="./create.php">
-                Submit your first report
-            </a>
-            
+            <p>No reports.</p>
             <?php else: ?>
 
 
@@ -150,7 +152,6 @@ Export CSV
             <?php if ($_SESSION['role'] === 'admin'): ?>
                 <th>Submitted By</th>
             <?php endif; ?>
-
             <th>Date</th>
             <th>Device</th>
             <th>Action</th>

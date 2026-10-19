@@ -12,6 +12,10 @@ switch($route){
         case '/login':
             require_once  __DIR__ . "/../views/login.php";
     break;
+
+        case '/logout':
+            require_once  __DIR__ . "/../views/logout.php";
+    break;
     
     //Actions
     case '/dashboard/reports/create':

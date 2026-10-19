@@ -1,9 +1,7 @@
-<?php
-
+<?php 
 session_start();
-
-session_unset();
-session_destroy();
-
-header('Location: ./login');
-exit;
+$_SESSION = []; 
+session_destroy(); 
+header("Location: /dh_reports/login"); 
+exit; 
+?>

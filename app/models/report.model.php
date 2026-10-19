@@ -359,6 +359,7 @@ public function createReport($report)
     ]);
 }
 
+
 //AISLOPP
 private function buildReportConditions($filters, $userId = null)
 {

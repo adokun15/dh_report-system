@@ -10,7 +10,7 @@ $error = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $authController->login(trim($_POST['email']), $_POST['password']);
     if ($result['success']) {
-        header('Location: ./dashboard');
+        header('Location: /dh_reports/dashboard');
         exit;
     }
     

@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p>Add an admin or staff member to the reporting system.</p>
         </div>
 
-        <a href="/dh_reports/users" class="">
+        <a href="/dh_reports/dashboard/users" class="">
             Back to Users
         </a>
     </div>

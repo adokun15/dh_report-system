@@ -12,24 +12,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       header('Location: /dh_reports/dashboard/reports');
         exit;
     }
-
-
     $error = 'Failed to submit report.';
 }
 ?>
 
 <?php require __DIR__ . '/../../components/head.php'; ?>
 <section class="dashboard">
-    <!-- GENERATE: Report creation page with a simple form for staff to submit a new report -->
     <?php require __DIR__ . '/../../components/private_nav.php'; ?>
 
-    <main class="dashboard_body">
+    <main class="dashboard_body centered">
         <header class="reports_header">
             <div>
-                <h2>Data harvesting Report collection</h2>
+                <h2>Submission Form</h2>
+                <p>Submit your data harvesting report here accurately</p>
             </div>
         </header>
-        <form method="POST" class="report_form centered">
+        <form method="POST" class="report_form">
             <?php if ($error): ?>
             <p class="error_text">
                 <?= htmlspecialchars($error) ?>
@@ -169,7 +167,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     Cancel
                 </a>
             </div>
-        </form>
+       
+         </form>
     </main>
 
 </section>
