@@ -27,7 +27,7 @@ if (!$report) {
 
     <?php require __DIR__ . '/../../components/private_nav.php'; ?>
 
-    <main class="dashboard_body centered">
+    <main class="dashboard_body centered single_report">
         <div class='reports_header'>
             <article>
                 <h3>Single Report</h3>
@@ -64,27 +64,36 @@ if (!$report) {
             <div class="report_record_view">
               <div class="report_record_before">
                 <h4>Before Syncing</h4>
-                <p>Duplicates Record: <?= nl2br((htmlspecialchars($report['before_duplicates_record'])))?></p>
-                <p>Success Record: <?= nl2br((htmlspecialchars($report['before_success_record'])))?></p>
+                <p class="recorded_based_title"><span >Duplicates Record:</span> <span class="single_report_solid"><?= nl2br((htmlspecialchars($report['before_duplicates_record'])))?></span></p>
+                <p class="recorded_based_title"><span >Success Record:</span> <span class="single_report_solid"><?= nl2br((htmlspecialchars($report['before_success_record'])))?></span></p>
               </div>
               <div class="report_record_after">
                 <h4>After Syncing</h4>
-                <p>Duplicates Record: <?= nl2br((htmlspecialchars($report['after_duplicates_record'])))?></p>
-                <p>Success Record: <?= nl2br((htmlspecialchars($report['after_success_record'])))?></p>
+                <p class="recorded_based_title">
+                    <span>Duplicates Record</span> 
+                    <span class="single_report_solid"><?= nl2br((htmlspecialchars($report['after_duplicates_record'])))?>
+                </span>
+                </p>
+                <p class="recorded_based_title"><span>Success Record</span> <span class="single_report_solid"><?= nl2br((htmlspecialchars($report['after_success_record'])))?></span></p>
               </div>
               <div class="report_record_total">
                 <h4>Total Records</h4>
-                <p>Registration: <?= nl2br((htmlspecialchars($report['reg_record'])))?></p>
-                <p>Sending: <?= nl2br((htmlspecialchars($report['sending_record'])))?></p>
-                <p>Error: <?= nl2br((htmlspecialchars($report['error_record'])))?></p>
+                <p class="recorded_based_title"><span>Registration</span> <span class="single_report_solid"><?= nl2br((htmlspecialchars($report['reg_record'])))?></span></p>
+                <p class="recorded_based_title"><span>Sending</span> <span class="single_report_solid"><?= nl2br((htmlspecialchars($report['sending_record'])))?></span></p>
+                <p class="recorded_based_title"><span>Error</span> <span class="single_report_solid"><?= nl2br((htmlspecialchars($report['error_record'])))?></span></p>
               </div>
               <div class="report_record_total">
                 <h4>Record base on Category</h4>
-                <p>Adult: <?= nl2br((htmlspecialchars($report['adult_record'])))?></p>
-                <p>Recapture: <?= nl2br((htmlspecialchars($report['recap_record'])))?></p>
-                <p>Child: <?= nl2br((htmlspecialchars($report['child_record'])))?></p>
-                <p>Online: <?= nl2br((htmlspecialchars($report['online_record'])))?></p>
-                <p>Child to Adult: <?= nl2br((htmlspecialchars($report['child_to_adult_record'])))?></p>
+                <p class="recorded_based_title"><span>Adult </span>
+                    <span class="single_report_solid"><?= nl2br((htmlspecialchars($report['adult_record'])))?></span></p>
+                <p class="recorded_based_title"><span >Recapture</span>
+                     <span class="single_report_solid"><?= nl2br((htmlspecialchars($report['recap_record'])))?></span></p>
+                <p class="recorded_based_title"><span >Child</span>
+                     <span class="single_report_solid"><?= nl2br((htmlspecialchars($report['child_record'])))?></span></p>
+                <p class="recorded_based_title"><span >Online</span>
+                     <span class="single_report_solid"><?= nl2br((htmlspecialchars($report['online_record'])))?></span></p>
+                <p class="recorded_based_title"><span >Child to Adult</span>
+                     <span class="single_report_solid"><?= nl2br((htmlspecialchars($report['child_to_adult_record'])))?></span></p>
               </div>
             </div>
 

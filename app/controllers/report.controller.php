@@ -10,9 +10,6 @@ class ReportController
 {
     private $reportModel;
 
-
-
-
     public function __construct($db)
     {
         $this->reportModel = new Report($db);
@@ -125,7 +122,17 @@ public function getReportsPage()
     $filters = $context['filters'];
     $userId = $context['user_id'];
 
-    $perPage = 10;
+    // Validate the selected page size.
+    $allowedPageSizes = ['20', '50', '100', 'all'];
+
+    $requestedSize = $_GET['per_page'] ?? '20';
+
+    $perPageOption = (
+        is_string($requestedSize) &&
+        in_array($requestedSize, $allowedPageSizes, true)
+    ) ? $requestedSize : '20';
+
+    // Get the requested page.
     $page = filter_input(
         INPUT_GET,
         'page',
@@ -134,18 +141,29 @@ public function getReportsPage()
 
     $page = ($page && $page > 0) ? $page : 1;
 
+    // Count reports matching the current filters and user.
     $totalReports = $this->reportModel->countFilteredReports(
         $filters,
         $userId
     );
 
-    $totalPages = max(1, (int) ceil($totalReports / $perPage));
+    // "All" means one page containing every matching report.
+    $perPage = ($perPageOption === 'all')
+        ? max(1, $totalReports)
+        : (int) $perPageOption;
+
+    $totalPages = ($perPageOption === 'all')
+        ? 1
+        : max(1, (int) ceil($totalReports / $perPage));
 
     // Prevent requests for pages beyond the available results.
     $page = min($page, $totalPages);
 
-    $offset = ($page - 1) * $perPage;
+    $offset = ($perPageOption === 'all')
+        ? 0
+        : ($page - 1) * $perPage;
 
+    // Fetch reports using the existing model method.
     $reports = $this->reportModel->getPaginatedReports(
         $filters,
         $userId,
@@ -157,23 +175,25 @@ public function getReportsPage()
         'reports' => $reports,
         'filters' => $filters,
         'page' => $page,
-        'per_page' => $perPage,
+        'per_page' => $perPageOption,
         'total_reports' => $totalReports,
         'total_pages' => $totalPages,
     ];
 }
+
+
 //Single Data: 
 public function show($reportId)
 {
     if($_SESSION['role'] === 'staff'){
-        return $this->reportModel->getSingleReportByUserId(
+        return $this->reportModel->getSingleReportById(
             $reportId,
             $_SESSION['user_id']
             );
         } else {
             return $this->reportModel->getSingleReportByAdmin($reportId);
             }
-            }
+        }
             
             
     public function exportCsv()

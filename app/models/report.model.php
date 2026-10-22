@@ -5,10 +5,7 @@ class Report
     private $db;
 
     public function __construct($db)
-    {
-        $this->db = $db;
-    }
-
+    {$this->db = $db; }
 
     public function getAllReports()
 {
@@ -33,11 +30,10 @@ class Report
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-public function getReportsByUser($userId)
+/*public function getSingleReportByUserId($userId)
    {
     $sql = "
-        SELECT
-         * FROM reports
+        SELECT * FROM reports
         WHERE author_id = :user_id
         ORDER BY created_at DESC
     ";
@@ -50,7 +46,7 @@ public function getReportsByUser($userId)
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
-
+*/
 public function getReportsByDivision()
 //Coalesce(SUM(reg_record), 0) AS registrations,
 //Coalesce(SUM(success_record), 0) AS successful,
@@ -254,7 +250,7 @@ public function getSingleReportById($reportId, $userId){
     $sql = "
         SELECT * FROM reports
         WHERE report_id = :report_id
-        AND user_id = :user_id
+        AND author_id = :user_id
         LIMIT 1
     ";
 
